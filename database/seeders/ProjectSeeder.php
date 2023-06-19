@@ -20,7 +20,7 @@ class ProjectSeeder extends Seeder
             $newProject = new Project();
             $newProject->title = $faker->sentence(3);
             $newProject->description = $faker->text();
-            $newProject->lang = $faker-> words(2);
+            $newProject->lang = $faker-> company();
             $newProject->save();
         }
     }

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Project;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdatePostRequest;
+use App\Http\Requests\StorePostRequest;
 
 
 
@@ -36,16 +38,16 @@ class ProjectController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $request->validate([
-            'title'=>'required|unique:projects|max:100'
-        ],
-        [
-           'title.required'=>'Il campo è obbligatorio',
-           'title.unique'=>'Il dato è già presente',
-           'title-max'=>'Il titolo supera il valore massimo' 
-        ]);
+        // $request->validate([
+        //     'title'=>'required|unique:projects|max:100'
+        // ],
+        // [
+        //    'title.required'=>'Il campo è obbligatorio',
+        //    'title.unique'=>'Il dato è già presente',
+        //    'title-max'=>'Il titolo supera il valore massimo' 
+        // ]);
 
         $form_data = $request->all();
 
@@ -91,16 +93,16 @@ class ProjectController extends Controller
      * @param  \App\Models\Admin\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePostRequest $request, $id)
     {
-        $request->validate([
-            'title'=>'required|unique:projects|max:100'
-        ],
-        [
-            'title.required'=>'Il campo è obbligatorio',
-            'title.unique'=>'Il dato è già presente',
-            'title-max'=>'Il titolo supera il valore massimo' 
-         ]);
+        // $request->validate([
+        //     'title'=>'required|unique:projects|max:100'
+        // ],
+        // [
+        //     'title.required'=>'Il campo è obbligatorio',
+        //     'title.unique'=>'Il dato è già presente',
+        //     'title-max'=>'Il titolo supera il valore massimo' 
+        //  ]);
 
         $form_data = $request->all();
         $mod_post =  Project::find($id);

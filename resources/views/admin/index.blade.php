@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<h1>sono la pagina admin index</h1>
+<h1 class="text-center">sono la pagina admin index</h1>
 <div class="row gap-2 justify-content-center">
     @forelse ($posts as $elem) 
-    <div class="col-2 d-flex my-2">
+    <div class="col-2 d-flex my-2 flex-column">
         <a class="text-decoration-none d-flex" href="{{ route( 'admin.index.show', $elem->id ) }}">
             <div class="card" style="width: 18rem;">
                 <div class="card-body">
@@ -13,6 +13,7 @@
                 </div>    
             </div>
         </a>
+        
     </div>
     @empty
     @endforelse

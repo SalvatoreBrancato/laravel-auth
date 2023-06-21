@@ -77,9 +77,11 @@ class ProjectController extends Controller
      * @param  \App\Models\Admin\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function edit(Project $project)
+    public function edit($id)
     {
-        //
+        $mod_post =  Project::find($id);
+        return view('admin.edit',compact('mod_post'));
+        //return view('admin.edit', compact('project'));
     }
 
     /**
@@ -89,9 +91,22 @@ class ProjectController extends Controller
      * @param  \App\Models\Admin\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Project $project)
+    public function update(Request $request, $id)
     {
-        //
+        $request->validate([
+            'title'=>'required|unique:projects|max:100'
+        ],
+        [
+            'title.required'=>'Il campo è obbligatorio',
+            'title.unique'=>'Il dato è già presente',
+            'title-max'=>'Il titolo supera il valore massimo' 
+         ]);
+
+        $form_data = $request->all();
+        $mod_post =  Project::find($id);
+        $mod_post->update($form_data);
+
+        return redirect()->route('admin.index.index');
     }
 
     /**
@@ -100,8 +115,11 @@ class ProjectController extends Controller
      * @param  \App\Models\Admin\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Project $project)
+    public function destroy($id)
     {
-        //
+        $mod_post =  Project::find($id);
+        $mod_post->delete();
+
+        return redirect()->route('admin.index.index');
     }
 }

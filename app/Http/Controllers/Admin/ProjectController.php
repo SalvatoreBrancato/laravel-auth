@@ -27,7 +27,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        //
+        return view( 'admin.create' );
     }
 
     /**
@@ -38,7 +38,24 @@ class ProjectController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'title'=>'required|unique:projects|max:100'
+        ],
+        [
+           'title.required'=>'Il campo è obbligatorio',
+           'title.unique'=>'Il dato è già presente',
+           'title-max'=>'Il titolo supera il valore massimo' 
+        ]);
+
+        $form_data = $request->all();
+
+        $new_project = new Project();
+
+        $new_project->fill( $form_data );
+        
+                $new_project->save();
+        
+                return redirect()->route( 'admin.index.index' );
     }
 
     /**
@@ -47,9 +64,11 @@ class ProjectController extends Controller
      * @param  \App\Models\Admin\Project  $project
      * @return \Illuminate\Http\Response
      */
-    public function show(Project $project)
+    public function show($id)
     {
-        return view('admin.show', compact('project'));
+        
+        $project = Project::find($id);
+        return view('admin.show', compact( 'project' ));
     }
 
     /**

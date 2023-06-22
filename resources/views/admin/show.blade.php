@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <img src="{{asset('storage/' . $project->path)}}" alt="">
         <h1>{{ $project->title }}</h1>
         <p>{{ $project->description }}</p>
         <a class="text-decoration-none" href=" {{ route( 'admin.index.edit', $project ) }} " class="my-2 btn btn-primary">Modifica</a> 

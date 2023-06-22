@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\Controller;
 use App\Models\Admin\Project;
 use Illuminate\Http\Request;
 use App\Http\Requests\UpdatePostRequest;
 use App\Http\Requests\StorePostRequest;
+use Illuminate\Support\Facades\Storage;
 
 
 
@@ -18,8 +20,8 @@ class ProjectController extends Controller
      */
     public function index()
     {
-       $posts = Project::All();
-       return view ('admin.index', compact('posts'));
+        $posts = Project::All();
+        return view('admin.index', compact('posts'));
     }
 
     /**
@@ -29,7 +31,7 @@ class ProjectController extends Controller
      */
     public function create()
     {
-        return view( 'admin.create' );
+        return view('admin.create');
     }
 
     /**
@@ -51,13 +53,24 @@ class ProjectController extends Controller
 
         $form_data = $request->all();
 
+     
+
+        if ($request->hasFile('path')) {
+            
+
+            //     //Genere un path di dove verrà salvata l'iimagine nel progetto
+            $img_path = Storage::disk('public')->put('uploads', $request['path']);
+
+            $form_data['path'] = $img_path;
+        }
+
         $new_project = new Project();
 
-        $new_project->fill( $form_data );
-        
-                $new_project->save();
-        
-                return redirect()->route( 'admin.index.index' );
+        $new_project->fill($form_data);
+
+        $new_project->save();
+
+        return redirect()->route('admin.index.index');
     }
 
     /**
@@ -68,9 +81,9 @@ class ProjectController extends Controller
      */
     public function show($id)
     {
-        
+
         $project = Project::find($id);
-        return view('admin.show', compact( 'project' ));
+        return view('admin.show', compact('project'));
     }
 
     /**
@@ -82,7 +95,7 @@ class ProjectController extends Controller
     public function edit($id)
     {
         $mod_post =  Project::find($id);
-        return view('admin.edit',compact('mod_post'));
+        return view('admin.edit', compact('mod_post'));
         //return view('admin.edit', compact('project'));
     }
 
@@ -105,8 +118,34 @@ class ProjectController extends Controller
         //  ]);
 
         $form_data = $request->all();
-        $mod_post =  Project::find($id);
+        if ($request->hasFile('path')) {
+            if( $request->cover_image ){
+                Storage::delete($request->cover_image);
+            }
+
+            //     //Genere un path di dove verrà salvata l'iimagine nel progetto
+            $img_path = Storage::disk('public')->put('uploads', $request['path']);
+
+            $form_data['path'] = $img_path;
+        }
+        $mod_post = Project::find($id);
         $mod_post->update($form_data);
+
+        // if( $request->hasFile('path') ){
+
+
+        //     if( $post->path ){
+        //         Storage::delete($post->path);
+        //     }
+
+
+        //     //Genere un path di dove verrà salvata l'iimagine nel progetto
+        //     $path = Storage::disk('public')->put( 'post_images', $request->path );
+
+        //     $form_data['path'] = $path;
+        // }
+
+
 
         return redirect()->route('admin.index.index');
     }
@@ -119,9 +158,14 @@ class ProjectController extends Controller
      */
     public function destroy($id)
     {
+
+
+
+        // if( $post->path ){
+        //     Storage::delete($post->path);
+        // } 
         $mod_post =  Project::find($id);
         $mod_post->delete();
-
         return redirect()->route('admin.index.index');
     }
 }

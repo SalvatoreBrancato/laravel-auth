@@ -27,8 +27,13 @@
         </div>
 
         <div class="form-group">
-            <label for="projects-path" class="form-label">Lang</label>
-            <input type="file" id="projects-path" name="path"  class="form-control">
+            <label for="projects-lang" class="form-label">Lang</label>
+            <input type="text" id="projects-lang" name="lang" class="form-control">
+        </div>
+
+        <div class="form-group">
+            <label for="path" class="form-label">Immagine</label>
+            <input type="file" id="path" name="path"  class="form-control">
         </div>
 
         {{-- <div class="form-group">
